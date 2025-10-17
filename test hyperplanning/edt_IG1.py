@@ -1,8 +1,17 @@
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.action_chains import ActionChains
+import sys
+try:
+    from selenium import webdriver
+    from selenium.webdriver.chrome.options import Options
+    from selenium.webdriver.common.by import By
+    from selenium.webdriver.common.keys import Keys
+    from selenium.webdriver.common.action_chains import ActionChains
+    from selenium.webdriver.chrome.service import Service
+except Exception as e:
+    print("\n⚠️ Selenium n'est pas installé ou introuvable dans cet environnement.")
+    print("Installe-le via: pip install selenium webdriver-manager")
+    print("Ou installe seulement selenium: pip install selenium")
+    print("Ensuite assure-toi que chromedriver/Chrome sont installés et compatibles.")
+    sys.exit(1)
 import time
 import json
 import os
@@ -15,18 +24,25 @@ json_save_path = r"/home/aurelien/Bureau/test hyperplanning/edt_IG1.json"
 ics_save_path = r"/home/aurelien/Bureau/test hyperplanning/edt_IG1.ics"
 
 options = Options()
-# Headless mode: if running on a server without DISPLAY, use headless
-if not os.environ.get("DISPLAY"):
-    # Newer Chrome supports --headless=new, fallback to --headless
+# Allow forcing headless via environment variable
+force_headless = os.environ.get("FORCE_HEADLESS") or os.environ.get("HPESGT_FORCE_HEADLESS")
+display = os.environ.get("DISPLAY")
+if force_headless:
+    try:
+        options.add_argument("--headless=new")
+    except Exception:
+        options.add_argument("--headless")
+    print("→ FORCE_HEADLESS set: running Chrome in headless mode")
+elif not display:
     try:
         options.add_argument("--headless=new")
     except Exception:
         options.add_argument("--headless")
     print("→ No DISPLAY found: running Chrome in headless mode")
 else:
-    # If DISPLAY is present, keep windowed but set size for consistency
-    options.add_argument("--window-size=1400,900")
     print("→ DISPLAY found: running Chrome with window (window-size set)")
+# Set window size in all modes to stabilize layout
+options.add_argument("--window-size=1400,900")
 options.add_argument("--disable-gpu")
 options.add_argument("--no-sandbox")
 options.add_argument("--disable-dev-shm-usage")
@@ -83,7 +99,7 @@ def trouver_jour_par_colonnes(blocs):
 try:
     print("-> Ouverture du site...")
     driver.get("https://hpesgt.cnam.fr/hp/invite")
-    time.sleep(5)
+    time.sleep(2)
 
     # === Sélection de la classe IG1 ===
     print("-> Sélection de la classe IG1...")
@@ -92,7 +108,7 @@ try:
     champ.send_keys("IG1")
     time.sleep(1)
     champ.send_keys(Keys.ENTER)
-    time.sleep(5)
+    time.sleep(3)
 
     # === Défilement pour forcer le chargement ===
     print("-> Défilement de la page pour charger tous les cours...")
@@ -113,8 +129,9 @@ try:
     for bloc in cours_elements:
         try:
             cours_simple = bloc.find_element(By.CSS_SELECTOR, "div.cours-simple")
-            horaire = cours_simple.get_attribute("title").strip()
-            style = bloc.get_attribute("style")
+            # horaire peut être en title ou dans le texte du bloc; récupérer style du parent ou de l'enfant
+            horaire = (cours_simple.get_attribute("title") or "").strip()
+            style = bloc.get_attribute("style") or cours_simple.get_attribute("style")
             jour = trouver_jour(style)
 
             contenus = cours_simple.find_elements(By.CSS_SELECTOR, "div.contenu")
@@ -172,12 +189,29 @@ try:
     def parse_horaire(h):
         if not h:
             return None, None
-        m = re.search(r"(\d{1,2}[:h]\d{2})\s*[-–]\s*(\d{1,2}[:h]\d{2})", h)
-        if not m:
-            return None, None
-        start = m.group(1).replace("h", ":")
-        end = m.group(2).replace("h", ":")
-        return start, end
+
+        # Quick approach: find all time-like substrings (08:00, 8h00, 0800)
+        times = re.findall(r"\d{1,2}[:h]\d{2}", h)
+        if len(times) >= 2:
+            start = times[0].replace("h", ":")
+            end = times[1].replace("h", ":")
+            return start, end
+
+        # fallback to other patterns (e.g., 0800-1000)
+        m = re.search(r"(\d{2})(\d{2})\s*[-–/]\s*(\d{2})(\d{2})", h)
+        if m:
+            start = f"{m.group(1)}:{m.group(2)}"
+            end = f"{m.group(3)}:{m.group(4)}"
+            return start, end
+
+        # try richer pattern including 'à' and 'a'
+        m = re.search(r"(\d{1,2}[:h]\d{2})\s*(?:[-–/]|à|a|au)\s*(\d{1,2}[:h]\d{2})", h)
+        if m:
+            start = m.group(1).replace("h", ":")
+            end = m.group(2).replace("h", ":")
+            return start, end
+
+        return None, None
 
     def to_utc_str(dt_local):
         dt_utc = dt_local.astimezone(ZoneInfo("UTC"))
@@ -202,34 +236,60 @@ try:
             continue
         horaire = ev.get("horaire", "")
         start_s, end_s = parse_horaire(horaire)
+        # If no horaire in title, try to extract from description fields
         if not start_s or not end_s:
-            # skip events without parsable time
-            continue
+            # try to look into 'cours' or 'salle' or 'professeur' fields for times
+            combined_text = " ".join([ev.get('cours',''), ev.get('salle',''), ev.get('professeur','')])
+            start_s, end_s = parse_horaire(combined_text)
+
+        if not start_s or not end_s:
+            # We'll create an all-day event on the matching weekday as fallback
+            create_all_day = True
+        else:
+            create_all_day = False
 
         # for each date in next 14 days matching weekday
         d = today
         while d <= end_date:
             if d.weekday() == wk:
                 try:
-                    sh, sm = [int(x) for x in start_s.split(":")]
-                    eh, em = [int(x) for x in end_s.split(":")]
-                    dt_start_local = datetime(d.year, d.month, d.day, sh, sm, tzinfo=tz)
-                    dt_end_local = datetime(d.year, d.month, d.day, eh, em, tzinfo=tz)
-
                     uid = f"{uuid.uuid4()}"
                     dtstamp = datetime.now(ZoneInfo("UTC")).strftime("%Y%m%dT%H%M%SZ")
-
-                    ics_lines += [
-                        "BEGIN:VEVENT",
-                        f"UID:{uid}",
-                        f"DTSTAMP:{dtstamp}",
-                        f"DTSTART:{to_utc_str(dt_start_local)}",
-                        f"DTEND:{to_utc_str(dt_end_local)}",
-                        f"SUMMARY:{ev.get('cours', '').replace('\n',' ')}",
-                        f"LOCATION:{ev.get('salle','').replace('\n',' ')}",
-                        f"DESCRIPTION:Professeur: {ev.get('professeur','').replace('\n',' ')}\\nSource: hpesgt.cnam.fr",
-                        "END:VEVENT",
-                    ]
+                    if create_all_day:
+                        print(f"→ Création all-day pour {ev.get('cours')} le {d} (jour={jour})")
+                        # All day event: DTSTART;VALUE=DATE
+                        dtstr = d.strftime("%Y%m%d")
+                        ics_lines += [
+                            "BEGIN:VEVENT",
+                            f"UID:{uid}",
+                            f"DTSTAMP:{dtstamp}",
+                            f"DTSTART;VALUE=DATE:{dtstr}",
+                            f"DTEND;VALUE=DATE:{(d+timedelta(days=1)).strftime('%Y%m%d')}",
+                            f"SUMMARY:{ev.get('cours', '').replace('\n',' ')}",
+                            f"LOCATION:{ev.get('salle','').replace('\n',' ')}",
+                            f"DESCRIPTION:Professeur: {ev.get('professeur','').replace('\n',' ')}\\nSource: hpesgt.cnam.fr",
+                            "END:VEVENT",
+                        ]
+                    else:
+                        print(f"→ Création horaire pour {ev.get('cours')} le {d} : {start_s} - {end_s} (jour={jour})")
+                        if not start_s or not end_s:
+                            # should not happen, but skip defensively
+                            continue
+                        sh, sm = [int(x) for x in start_s.split(":")]
+                        eh, em = [int(x) for x in end_s.split(":")]
+                        dt_start_local = datetime(d.year, d.month, d.day, sh, sm, tzinfo=tz)
+                        dt_end_local = datetime(d.year, d.month, d.day, eh, em, tzinfo=tz)
+                        ics_lines += [
+                            "BEGIN:VEVENT",
+                            f"UID:{uid}",
+                            f"DTSTAMP:{dtstamp}",
+                            f"DTSTART:{to_utc_str(dt_start_local)}",
+                            f"DTEND:{to_utc_str(dt_end_local)}",
+                            f"SUMMARY:{ev.get('cours', '').replace('\n',' ')}",
+                            f"LOCATION:{ev.get('salle','').replace('\n',' ')}",
+                            f"DESCRIPTION:Professeur: {ev.get('professeur','').replace('\n',' ')}\\nSource: hpesgt.cnam.fr",
+                            "END:VEVENT",
+                        ]
                 except Exception as e:
                     print("⚠️ Erreur génération ICS pour ", ev, e)
             d = d + timedelta(days=1)
