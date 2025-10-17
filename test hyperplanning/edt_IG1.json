@@ -1,0 +1,58 @@
+[
+  {
+    "jour": "Lundi",
+    "horaire": "de 08h00 à 10h00 (02h00)",
+    "cours": "Mécanique 1",
+    "professeur": "ERRIEN",
+    "salle": "Salle C02"
+  },
+  {
+    "jour": "Lundi",
+    "horaire": "de 10h15 à 12h15 (02h00)",
+    "cours": "Calculs mathématiques",
+    "professeur": "BRAHIM OTSMA",
+    "salle": "Salle C05"
+  },
+  {
+    "jour": "Inconnu",
+    "horaire": "de 10h15 à 12h15 (02h00)",
+    "cours": "Calculs mathématiques",
+    "professeur": "BRAHIM OTSMA",
+    "salle": "Salle C02"
+  },
+  {
+    "jour": "Inconnu",
+    "horaire": "de 13h30 à 15h30 (02h00)",
+    "cours": "Chimie 2",
+    "professeur": "GAO",
+    "salle": "Salle C03"
+  },
+  {
+    "jour": "Inconnu",
+    "horaire": "de 08h00 à 10h00 (02h00)",
+    "cours": "Optique géométrique",
+    "professeur": "DANIEL",
+    "salle": "Salle C02"
+  },
+  {
+    "jour": "Inconnu",
+    "horaire": "de 10h15 à 12h15 (02h00)",
+    "cours": "Algorithmique et programmation",
+    "professeur": "ANANE",
+    "salle": "Salle C02"
+  },
+  {
+    "jour": "Inconnu",
+    "horaire": "de 10h15 à 12h15 (02h00)",
+    "cours": "Chimie 1",
+    "professeur": "RENOU",
+    "salle": "Salle C02"
+  },
+  {
+    "jour": "Inconnu",
+    "horaire": "de 13h30 à 16h00 (02h30)",
+    "cours": "Calculs mathématiques",
+    "professeur": "BRAHIM OTSMA",
+    "salle": "Salle C02"
+  }
+]
