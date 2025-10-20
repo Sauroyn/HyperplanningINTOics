@@ -1,0 +1,14 @@
+{
+  "Hémoglobine": {
+    "min": 13.0,
+    "max": 17.0
+  },
+  "Globules blancs": {
+    "min": 4.0,
+    "max": 10.0
+  },
+  "Plaquettes": {
+    "min": 150.0,
+    "max": 400.0
+  }
+}
