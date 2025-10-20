@@ -31,6 +31,7 @@ Créez un fichier `.env` à la racine en vous basant sur `.env.example`:
 PDF_FOLDER=pdfs
 OUTPUT_FILE=resultats.xlsx
 THRESHOLDS_FILE=seuils.json
+BANLIST_FILE=banlist.txt
 ```
 
 - Placez vos PDF dans le dossier `pdfs/`.
@@ -54,10 +55,11 @@ source .venv/bin/activate
 python main.py --force
 ```
 - `--force` ré-extrait les valeurs pour les dates déjà présentes.
-- Les graphiques PNG seront générés dans le répertoire courant, sous la forme `graph_<param>.png`.
+- Les graphiques sont intégrés directement dans l'Excel dans un onglet `Graphiques`.
 
 ## Notes
 - Liste blanche des paramètres analysés: voir `main.py` (tableau `PARAMS_WHITELIST`). Ajoutez vos paramètres si besoin.
+- Banlist: le fichier `banlist.txt` contient des mots/expressions à ignorer lors de l'extraction. Si une ligne du PDF CONTIENT l'un de ces termes (recherche insensible à la casse), elle est ignorée. Les lignes vides ou commençant par `#` sont ignorées.
 - Les dates de prélèvement sont détectées via la mention "Prélevé le JJ-MM-AAAA" dans le PDF.
 - Les séparateurs de décimales virgule sont gérés.
-- Les colonnes de dates sont triées chronologiquement lors de la génération des graphiques.
+- Les colonnes de dates sont triées chronologiquement pour les graphiques et les données.

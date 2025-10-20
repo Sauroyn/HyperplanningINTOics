@@ -6,6 +6,7 @@ import pandas as pd
 from dotenv import load_dotenv
 from openpyxl import load_workbook
 from openpyxl.styles import PatternFill
+from openpyxl.chart import LineChart, Reference
 import matplotlib.pyplot as plt
 import argparse
 
@@ -15,6 +16,7 @@ load_dotenv()
 PDF_FOLDER = os.getenv("PDF_FOLDER", "pdfs")
 OUTPUT_FILE = os.getenv("OUTPUT_FILE", "resultats.xlsx")
 THRESHOLDS_FILE = os.getenv("THRESHOLDS_FILE", "seuils.json")
+BANLIST_FILE = os.getenv("BANLIST_FILE", "banlist.txt")
 
 # ---------------------------
 # Liste blanche des paramètres biologiques
@@ -49,9 +51,27 @@ def extract_data_from_pdf(pdf_path):
         r"^\s*([A-Za-zÀ-ÿ\s\-\(\)/]+?)\s+([\d,\.]+)\s*([a-zA-Zµ%/]+)?\s*(?:\(([^)]+)\))?"
     )
 
+    # Charger banlist si présente
+    banlist = []
+    if BANLIST_FILE and os.path.exists(BANLIST_FILE):
+        try:
+            with open(BANLIST_FILE, "r", encoding="utf-8") as f:
+                for raw in f:
+                    s = raw.strip()
+                    if not s or s.startswith("#"):
+                        continue
+                    banlist.append(s)
+        except Exception:
+            pass
+
     for line in text.split("\n"):
         line = line.strip()
         if not line or len(line) > 120:
+            continue
+
+        # Si la ligne contient un élément banni (insensible à la casse), on l'ignore
+        line_low = line.lower()
+        if any(b.lower() in line_low for b in banlist):
             continue
 
         # on ne garde que les paramètres whitelistés
@@ -181,6 +201,19 @@ def update_excel(pdf_path, date, results, force=False):
     # Sauvegarder les seuils mis à jour (si quelque chose a été ajouté)
     save_thresholds(thresholds)
 
+    # Réordonner les colonnes de dates par ordre chronologique
+    def _is_date_label(c):
+        if c == "Paramètre":
+            return False
+        return not pd.isna(pd.to_datetime(c, dayfirst=True, errors="coerce"))
+
+    date_cols = [c for c in df.columns if _is_date_label(c)]
+    non_date_cols = [c for c in df.columns if c not in date_cols and c != "Paramètre"]
+    # tri par date croissante
+    sorted_dates = sorted(date_cols, key=lambda x: pd.to_datetime(x, dayfirst=True, errors="coerce"))
+    ordered_cols = ["Paramètre"] + sorted_dates + non_date_cols
+    df = df.reindex(columns=ordered_cols)
+
     df.to_excel(OUTPUT_FILE, index=False)
     print(f"[INFO] {os.path.basename(pdf_path)} -> {len(results)} résultats extraits pour la date {date}")
 
@@ -223,42 +256,73 @@ def colorize_outliers():
 # ---------------------------
 # Graphiques
 # ---------------------------
-def plot_graphs():
+def insert_charts_into_excel():
     if not os.path.exists(OUTPUT_FILE):
         return
-    df = pd.read_excel(OUTPUT_FILE)
-    df = df.set_index("Paramètre")
+    # Charger workbook et feuille de données
+    wb = load_workbook(OUTPUT_FILE)
+    ws_data = wb.active
 
-    plt.ioff()  # mode non interactif
+    # Trouver/Créer la feuille "Graphiques"
+    sheet_name = "Graphiques"
+    if sheet_name in wb.sheetnames:
+        # Supprimer et recréer pour éviter doublons
+        del wb[sheet_name]
+    ws_charts = wb.create_sheet(title=sheet_name)
 
-    for param in df.index:
-        # Ne garder que les colonnes dont l'en-tête ressemble à une date
-        date_cols = [
-            c for c in df.columns
-            if not pd.isna(pd.to_datetime(c, dayfirst=True, errors="coerce"))
-        ]
-        if not date_cols:
+    # Repérer les colonnes de dates (en-têtes ligne 1)
+    headers = [ws_data.cell(row=1, column=col).value for col in range(1, ws_data.max_column+1)]
+    try:
+        date_cols_idx = [i+1 for i, h in enumerate(headers) if h != "Paramètre" and not pd.isna(pd.to_datetime(h, dayfirst=True, errors="coerce"))]
+    except Exception:
+        date_cols_idx = [i+1 for i, h in enumerate(headers) if h != "Paramètre"]
+
+    # Pour chaque paramètre (ligne >=2), créer un graphique si au moins 2 valeurs
+    chart_row = 1
+    chart_col = 1
+    charts_per_row = 2
+    for r in range(2, ws_data.max_row+1):
+        param_name = ws_data.cell(row=r, column=1).value
+        if not param_name:
             continue
-        series = df.loc[param, date_cols]
-        # convertir en numérique, ignorer les cellules non numériques
-        series = pd.to_numeric(series, errors="coerce").dropna()
-        if len(series) > 1:
-            # trier par date croissante
-            idx_dates = pd.to_datetime(series.index, dayfirst=True, errors="coerce")
-            series.index = idx_dates
-            series = series.sort_index()
 
-            plt.figure()
-            plt.plot(series.index, series.values, marker='o')
-            plt.title(f"Évolution de {param}")
-            plt.xlabel("Date")
-            plt.ylabel("Valeur")
-            plt.grid(True)
-            plt.tight_layout()
-            safe_name = re.sub(r"[^A-Za-z0-9_\-]", "_", param)
-            plt.savefig(f"graph_{safe_name}.png")
-            plt.close()
-    print("[INFO] Graphiques générés dans le dossier courant")
+        # Compter valeurs numériques présentes
+        numeric_count = 0
+        for c in date_cols_idx:
+            v = ws_data.cell(row=r, column=c).value
+            try:
+                if v is not None and str(v) != "" and float(str(v).replace(",", ".")) == float(str(v).replace(",", ".")):
+                    numeric_count += 1
+            except Exception:
+                pass
+        if numeric_count < 2:
+            continue
+
+        # Construire chart
+        chart = LineChart()
+        chart.title = f"Évolution de {param_name}"
+        chart.y_axis.title = "Valeur"
+        chart.x_axis.title = "Date"
+
+        # Données
+        data_ref = Reference(ws_data, min_col=min(date_cols_idx), max_col=max(date_cols_idx), min_row=r, max_row=r)
+        cat_ref = Reference(ws_data, min_col=min(date_cols_idx), max_col=max(date_cols_idx), min_row=1, max_row=1)
+        chart.add_data(data_ref, titles_from_data=False)
+        chart.set_categories(cat_ref)
+
+        # Position dans la feuille charts
+        cell_addr = ws_charts.cell(row=chart_row, column=chart_col).coordinate
+        ws_charts.add_chart(chart, cell_addr)
+
+        # Avancer position (grille 2 colonnes)
+        if chart_col == 1:
+            chart_col = 9  # environ 8 colonnes d'écart
+        else:
+            chart_col = 1
+            chart_row += 15  # descendre d'un bloc
+
+    wb.save(OUTPUT_FILE)
+    print("[INFO] Graphiques intégrés dans le fichier Excel (onglet 'Graphiques')")
 
 # ---------------------------
 # Main
@@ -275,4 +339,4 @@ if __name__ == "__main__":
         update_excel(pdf_path, date, results, force=args.force)
 
     colorize_outliers()
-    plot_graphs()
+    insert_charts_into_excel()
