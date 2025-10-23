@@ -1,0 +1,66 @@
+#!/bin/bash
+# Script de démonstration de la nouvelle structure modulaire
+
+echo "════════════════════════════════════════════════════════════════"
+echo "   Démonstration de la Structure Modulaire"
+echo "════════════════════════════════════════════════════════════════"
+echo ""
+
+echo "📁 Structure des fichiers créés:"
+echo ""
+echo "  config.py              - Configuration et constantes"
+echo "  dev_logger.py          - Gestionnaire de logs (mode --dev)"
+echo "  pdf_extractor.py       - Extraction des données PDF"
+echo "  thresholds_manager.py  - Gestion des seuils de référence"
+echo "  excel_manager.py       - Gestion Excel (données, couleurs, graphiques)"
+echo "  main_new.py            - Point d'entrée principal"
+echo ""
+
+echo "════════════════════════════════════════════════════════════════"
+echo "   Exemples d'utilisation"
+echo "════════════════════════════════════════════════════════════════"
+echo ""
+
+echo "1️⃣  Mode normal:"
+echo "   python main_new.py"
+echo ""
+
+echo "2️⃣  Mode développement (avec logs dans dev.txt):"
+echo "   python main_new.py --dev"
+echo ""
+
+echo "3️⃣  Forcer la ré-extraction:"
+echo "   python main_new.py --force"
+echo ""
+
+echo "4️⃣  Combiner dev + force:"
+echo "   python main_new.py --dev --force"
+echo ""
+
+echo "════════════════════════════════════════════════════════════════"
+echo "   Contenu du fichier dev.txt (mode --dev)"
+echo "════════════════════════════════════════════════════════════════"
+echo ""
+echo "  ✓ Banlist chargée avec nombre d'éléments"
+echo "  ✓ Texte brut extrait de chaque PDF"
+echo "  ✓ Date de prélèvement détectée"
+echo "  ✓ Résultats filtrés avec:"
+echo "    - Nombre de paramètres retenus"
+echo "    - Détail de chaque paramètre (valeur, unité, intervalle)"
+echo ""
+
+echo "════════════════════════════════════════════════════════════════"
+echo "   Avantages de la nouvelle structure"
+echo "════════════════════════════════════════════════════════════════"
+echo ""
+echo "  ✅ Code séparé en modules réutilisables"
+echo "  ✅ Plus facile à maintenir et déboguer"
+echo "  ✅ Mode --dev pour voir ce qui est extrait et filtré"
+echo "  ✅ Chaque module peut être testé indépendamment"
+echo "  ✅ Documentation intégrée (docstrings)"
+echo ""
+
+echo "💡 Pour voir les logs détaillés, lancez:"
+echo "   python main_new.py --dev --force"
+echo "   puis consultez le fichier dev.txt"
+echo ""

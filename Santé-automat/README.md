@@ -1,65 +1,132 @@
-# Santé-automat (local)
+# 🏥 Santé-automat
 
-Ce script lit vos PDF d'analyses sanguines, ajoute les résultats dans un fichier Excel local, colorise les valeurs selon des seuils et génère des graphiques d'évolution. Tout reste en local.
+Analyseur automatique de résultats médicaux depuis des fichiers PDF vers Excel.
 
-## Prérequis
-- Python 3.10+ (testé avec 3.13)
-- Fedora Workstation (ou Linux équivalent)
+## 📁 Structure du projet
 
-## Installation (Fedora)
+```
+Santé-automat/
+├── 📄 main_new.py          # Point d'entrée principal
+├── 📂 src/                 # Modules Python
+│   ├── config.py           # Configuration globale
+│   ├── dev_logger.py       # Mode développement
+│   ├── pdf_extractor.py    # Extraction PDF
+│   ├── thresholds_manager.py  # Gestion des seuils
+│   └── excel_manager.py    # Gestion Excel
+├── 📂 docs/                # Documentation
+│   ├── QUICK_START.md      # ⭐ Guide rapide (commencez ici)
+│   ├── RECAP.md            # Résumé complet
+│   ├── ARCHITECTURE.md     # Diagrammes
+│   ├── STRUCTURE.md        # Doc technique
+│   └── MIGRATION.md        # Guide migration
+├── 📂 scripts/             # Utilitaires
+│   ├── check.sh            # Vérification installation
+│   ├── demo.sh             # Démonstration
+│   └── test_modules.py     # Tests unitaires
+├── 📂 archive/             # Anciens fichiers
+├── 📂 pdfs/                # PDF à analyser
+├── 📊 resultats.xlsx       # Résultats générés
+├── ⚙️ .env                 # Variables d'environnement
+├── 📋 banlist.txt          # Lignes à exclure
+├── 📊 seuils.json          # Seuils de référence
+└── 📦 requirements.txt     # Dépendances Python
+```
+
+## 🚀 Démarrage rapide
+
+### 1. Installation
 ```bash
-# 1) Se placer dans le projet
-cd "$(dirname "$0")" || true
-
-# 2) Créer un environnement virtuel
-python -m venv .venv
-
-# 3) Activer l'environnement
-source .venv/bin/activate
-
-# 4) Mettre à jour pip
-pip install --upgrade pip
-
-# 5) Installer les dépendances
+# Installer les dépendances
 pip install -r requirements.txt
 ```
 
-## Configuration
-Créez un fichier `.env` à la racine en vous basant sur `.env.example`:
-
-```
-PDF_FOLDER=pdfs
-OUTPUT_FILE=resultats.xlsx
-THRESHOLDS_FILE=seuils.json
-BANLIST_FILE=banlist.txt
-```
-
-- Placez vos PDF dans le dossier `pdfs/`.
-- Le fichier `resultats.xlsx` sera créé/complété automatiquement.
-- Les seuils peuvent être fournis dans `seuils.json` (recommandé) au format:
-
-```json
-{
-  "Hémoglobine": {"min": 13.0, "max": 17.0},
-  "Plaquettes": {"min": 150.0, "max": 400.0}
-}
-```
-
-Si `seuils.json` est absent, le script essaiera de déduire des seuils à partir des intervalles indiqués dans les PDF lorsqu'ils existent et les enregistrera dans `seuils.json`.
-
-Vous pouvez aussi fournir un `seuils.xlsx` avec trois colonnes: `Paramètre`, `min`, `max`. Dans ce cas, fixez `THRESHOLDS_FILE=seuils.xlsx`.
-
-## Utilisation
+### 2. Vérification
 ```bash
-source .venv/bin/activate
-python main.py --force
+# Vérifier que tout fonctionne
+./scripts/check.sh
 ```
-- `--force` ré-extrait les valeurs pour les dates déjà présentes.
-- Les graphiques sont intégrés directement dans l'Excel dans un onglet `Graphiques`.
 
-## Notes
-- Liste blanche des paramètres analysés: voir `main.py` (tableau `PARAMS_WHITELIST`). Ajoutez vos paramètres si besoin.
-- Banlist: le fichier `banlist.txt` contient des mots/expressions à ignorer lors de l'extraction. Si une ligne du PDF CONTIENT l'un de ces termes (recherche insensible à la casse), elle est ignorée. Les lignes vides ou commençant par `#` sont ignorées.
-- Les dates de prélèvement sont détectées via la mention "Prélevé le JJ-MM-AAAA" dans le PDF.
-- Les séparateurs de décimales virgule sont gérés.
-- Les colonnes de dates sont triées chronologiquement pour les graphiques et les données.
+### 3. Utilisation
+```bash
+# Mode normal
+python main_new.py
+
+# Mode développement (recommandé)
+python main_new.py --dev
+
+# Forcer la ré-extraction
+python main_new.py --force
+```
+
+## 📖 Documentation
+
+**🌟 Commencez ici :** [docs/QUICK_START.md](docs/QUICK_START.md)
+
+Autres guides :
+- **RECAP.md** - Vue d'ensemble complète
+- **ARCHITECTURE.md** - Diagrammes et architecture
+- **STRUCTURE.md** - Documentation technique
+- **MIGRATION.md** - Migration depuis l'ancien script
+
+## 🎯 Mode développement (`--dev`)
+
+Active le mode développement qui crée un fichier `dev.txt` contenant :
+- ✓ Texte brut extrait de chaque PDF
+- ✓ Date de prélèvement détectée
+- ✓ Résultats après filtrage (whitelist/banlist)
+
+**Utilité :** Déboguer l'extraction et comprendre ce que le script voit.
+
+```bash
+python main_new.py --dev --force
+cat dev.txt
+```
+
+## 📊 Résultats produits
+
+### resultats.xlsx
+- **Onglet 1 :** Données avec colorisation (🟢 vert = normal, 🔴 rouge = hors normes)
+- **Onglet 2 :** Graphiques d'évolution par paramètre
+
+### dev.txt (si mode --dev)
+- Texte brut des PDF
+- Détails de l'extraction
+- Résultats filtrés
+
+## ⚙️ Configuration
+
+### Paramètres à extraire
+Éditez `src/config.py` → `PARAMS_WHITELIST`
+
+### Lignes à exclure
+Éditez `banlist.txt`
+
+### Seuils de référence
+Éditez `seuils.json`
+
+## 🧪 Tests
+
+```bash
+# Tests unitaires
+python scripts/test_modules.py
+
+# Vérification complète
+./scripts/check.sh
+```
+
+## 🆘 Support
+
+Consultez la documentation complète dans le dossier `docs/`.
+
+Pour déboguer un problème :
+1. Lancez avec `--dev`
+2. Consultez `dev.txt`
+3. Vérifiez la configuration (whitelist/banlist/seuils)
+
+## 📝 Licence
+
+Usage personnel - Analyse de résultats médicaux
+
+---
+
+**Version :** 2.0.0 - Architecture modulaire avec mode développement

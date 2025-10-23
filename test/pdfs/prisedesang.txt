@@ -1,0 +1,203 @@
+                                                                             BIOGROUP MAINE ANJOU
+                                                                                                                                                               Laboratoire LE PRE − CML
+                                                                                                                                                  11 AVENUE LAENNEC − 72000 LE MANS
+                                                                                                                                          Téléphone : 02.43.78.40.60 - Fax : 02.43.77.54.09
+                                                                                                                                   Site Web : https://www.biogroup.fr/laborizon−maine−anjou
+
+
+
+
+  Patient :
+  M VOIRON Aurelien
+  Nom de naissance : VOIRON                                                                                      M VOIRON Aurelien
+  Date de naissance : 02−05−2007 (18 ans)                      Sexe : M                                          22 RUE BARTHLODI
+  22 RUE BARTHLODI                                                                                               APPT D351
+  72000 − LE MANS                                                                                                72000 LE MANS
+  Portable patient: 07.49.85.72.49
+  Prescrit par le Dr ACREER - −
+
+  Prélevé le 29−08−2025 à 17:45 par SLEC
+  Enregistré le 29−08−2025 à 17:51 / DIRECT LABORATOIRE PATIENT
+  Edité le 29−08−2025 à 20:11 / Compte−rendu complet
+
+
+
+  DEMANDE N° 25M010048287
+
+
+
+                     Accréditation n°8−3348
+                     (#) : Examens non couverts par l'accréditation
+                     Liste des sites et portées disponibles sur www.cofrac.fr
+  En cas, d'heure de prélèvement non communiquée, la validation des délais d'acceptation pré−analytiques ne peut être réalisée. Résultats à confronter au contexte clinique.
+                                                                                                                                           Intervalle de référence             Antériorités
+
+
+
+                                                                                       Hématologie
+                                                                                Nature de l'échantillon : Sang
+
+
+  Hémogramme
+  (Impédancemétrie à focalisation hydrodynamique − Hb : Spectrophotométrie − GB et formule leucocytaire : Fluoro−cytométrie en flux)
+    Hématies                                                         5,05 T/L                  (4,28−6,00)
+    Hémoglobine                                                      14,6 g/dL                 (13,4−16,7)
+    Hématocrite                                                         44 %                   (39−49)
+    V.G.M.                                                           86,7 fL                   (78,0−98,0)
+    T.C.M.H.                                                         28,9 pg                   (26,0−34,0)
+    C.C.M.H.                                                         33,3 %                    (31,0−36,5)
+
+    Leucocytes                                                                                                7,87      G/L                       (4,00−11,00)
+    Polynucléaires neutrophiles                                         63,8       %                          5,02      G/L                       (1,80−6,90)
+    Polynucléaires éosinophiles                                          0,9       %                          0,07      G/L                       (0,02−0,63)
+    Polynucléaires basophiles                                            0,4       %                          0,03      G/L                       (0,00−0,11)
+    Lymphocytes                                                         29,7       %                          2,34      G/L                       (1,00−4,80)
+    Monocytes                                                            5,2       %                          0,41      G/L                       (0,18−1,00)
+
+
+
+   Plaquettes                                                                                                 232 G/L                             (150−400)
+  (Impédance)
+
+
+                                                                                          Biochimie
+                                                                                Nature de l'échantillon : Sang
+
+
+
+   Créatinine                                                                                                 87,1 µmol/L                         (53,0−97,0)
+   (Méthode enzymatique standardisée IDMS)                                                                      9,9     mg/L                      (6,0−11,0)
+
+
+
+QrCode pour BIOGROUP PRO
+
+
+
+                                                                        Dr MANSOUR Wael (Biologiste)
+                                         Laboratoire enregistré sous le n°72−59 (BIOGROUP MAINE ANJOU, Pôle Santé Sud - 72000 Le Mans, au capital de 1 807 678.50 euros -
+                                            RCS Le Mans 518.912.985) Nous vous informons que, sauf opposition de votre part, vos résultats pourront être communiqués aux
+                                                                                  professionnels de santé appartenant à l'équipe de soins.                                       Page 1 sur 3
+Dossier 25M010048287 du 29−08−2025                                            M VOIRON Aurelien (Né VOIRON) né(e) 02−05−2007
+Prélevé le 29−08−2025 à 17:45
+Enregistré le 29−08−2025 à 17:51 Transmis par : DIRECT LABORATOIRE PATIENT
+Edité le 29−08−2025 à 20:11 / Compte−rendu complet
+                                                                                                                                 Intervalle de référence                  Antériorités
+
+
+
+
+ Estimation du DFG selon la formule CKD−EPI                                                          112 mL/min/1,73m2 (>90)
+
+Le DFG estimé est considéré comme légèrement diminué entre 60−90 ml/min/1,73m². L'insuffisance rénale est retenue pour des
+valeurs inférieures à 60 ml/min/1,73m² (HAS 2021).
+
+
+                                                                          Bilan hépatique
+                                                                        Nature de l'échantillon : Sang
+
+
+
+ Phosphatase alcaline                                                                                164 U/L                            (46−116)
+ (Méthode enzymatique IFCC)
+
+
+
+ ASAT (Transaminases TGO)                                                                              24 U/L                           (<40)
+ (Méthode enzymatique IFCC (avec P5P))
+ ALAT (Transaminases TGP)                                                                              23 U/L                           (<40)
+ (Méthode enzymatique IFCC (avec P5P))
+ GGT (Gamma Glutamyl Transpeptidase)                                                                   13 U/L                           (<73)
+ (Méthode enzymatique IFCC)
+
+Score(s) de fibrose hépatique
+ FIB−4 (Score de Fibrosis 4)                                                                        0,39
+
+Un parcours de soins spécialisé est recommandé pour une valeur de FIB−4 supérieure à 2,67 en l'absence de cytolyse et/ou de
+thrombopénie d'étiologie connue (AFEF 2020).
+
+
+
+                                                                               Information
+ Remarque :                                                                     Patient NON à Jeun
+
+
+
+
+                                                                Dr MANSOUR Wael (Biologiste)
+                                   Laboratoire enregistré sous le n°72−59 (SELAS LABORIZON MAINE ANJOU, Pôle Santé Sud - 72000 Le Mans, au capital de 307 678.50
+                                   euros - RCS Le Mans 518.912.985) Nous vous informons que, sauf opposition de votre part, vos résultats pourront être communiqués aux
+                                                                            professionnels de santé appartenant à l'équipe de soins.                                        Page 2 sur 3
+                                                        LABORIZON MAINE ANJOU
+                                                        Dossier 25M010048287 du 29−08−2025
+                                                        M VOIRON Aurelien (Né VOIRON) né(e) 02−05−2007
+Prélevé le 29−08−2025 à 17:45
+Enregistré le 29−08−2025 à 17:51 Transmis par : DIRECT LABORATOIRE PATIENT
+Edité le 29−08−2025 à 20:11 / Compte−rendu complet
+                                                                                                                                Intervalle de référence                  Antériorités
+
+
+
+
+           Lettre individuelle d'information remise au patient qui vise la réutilisation à des fins scientifiques (recherche) des
+           échantillons et des données personnelles et médicales collectées par Biogroup (articles 13 et 14 du RGPD et article
+           L1211−2 du Code de la Santé Publique) :
+
+           Dans le cadre de l'examen de biologie médicale réalisé par le laboratoire, ce dernier traite vos données à caractère personnel en
+           qualité de responsable de traitement (échantillons biologiques et données associées) conformément aux dispositions du
+           Règlement relatif à la protection des personnes physiques à l'égard du traitement des données à caractère personnel et à la libre
+           circulation de ces données (RGPD) et de la loi n° 78−17 du 6 janvier 1978 relative à l'informatique, aux fichiers et aux libertés.
+           Vous pouvez trouver une information complète sur https://biogroup.fr/politique−protection−donnees−personnelles/
+           Sauf opposition de votre part, vos échantillons ainsi que les données nécessaires et pertinentes de votre dossier
+           médical pourront être réutilisés à des fins scientifiques (recherche) par le laboratoire dans le strict respect de la
+           confidentialité qui s'y attache et de la réglementation applicable aux Données Personnelles.
+
+           Ainsi, vos échantillons pourront être amenés à intégrer les collections d'échantillons biologiques humains constituées
+           par Biogroup (DC−2020−4014 et AC−2023−5435, ou leurs renouvellements ultérieurs). Cette réunion d'échantillons sélectionnés
+           selon certains critères scientifiques permet la réalisation d'études dans le domaine de la santé.
+           Vos données et échantillons pourront également faire l'objet de transfert ou cession à l'un de nos partenaires académiques ou
+           industriels dès lors qu'un projet de recherche aura été déposé auprès d'une autorité française compétente.
+           Dans cette hypothèse, vos données et échantillons pourront être conservés deux (2) ans après la dernière publication des
+           résultats de la recherche, ou en cas d'absence de publication, jusqu'à la signature du rapport final de la recherche. Les données
+           font ensuite l'objet d'un archivage pour la durée de vingt (20) ans.
+
+           D'autre part, vos données pourront être collectées, enrichies et versées dans un entrepôt de données de santé constitué
+           en vue de faciliter leur utilisation ultérieure également à des fins de recherche, étude ou évaluation dans le domaine de la santé.
+           Un entrepôt de données de santé est une base de données qui conserve un nombre important de données pseudonymisées afin
+           de les mettre à disposition des acteurs dans le domaine de l'innovation en santé pour les besoins de leur programme de
+           recherche et développement.
+           L'enrichissement de vos données pourra être effectué notamment à partir de votre dossier médical partagé et/ou du Système
+           National des Données de Santé (SNDS).
+
+           En tout état de cause, le site https://biogroup.fr/specialites/innovation−scientifique−recherche−medicale/ détaille pour chaque
+           projet de recherche en cours : l'identité du responsable du projet, l'identité des partenaires éventuels, les dates de début et de fin,
+           et les finalités poursuivies justifiant la réutilisation de vos échantillons ou le traitement de vos données personnelles. Cette page
+           est le moyen de rester informé(e) sur les projets en cours chez Biogroup. L'affichage des projets sur la page du site Biogroup
+           vaut information au sens de la réglementation, aucune lettre individuelle complémentaire ne vous sera transmise.
+
+           Vous disposez conformément à la Réglementation applicable aux Données Personnelles des droits d'accès aux données vous
+           concernant, de rectification des données erronées, d'effacement des données, de limitation du traitement de vos données, et
+           d'opposition au traitement de vos données.
+           Vous pourrez choisir d'exercer vos droits:
+           −.En ligne https://securetransfert.biogroup.fr/form/opposition−reutilisation−des−donnees
+           −.Auprès des laboratoires Biogroup : une lettre d'information complémentaire et un formulaire d'opposition sont disponibles au
+           secrétariat.
+           −.Auprès du délégué à la protection des données de Biogroup en ligne (dpo[@]biogroup.fr) ou par courrier postal adressé au
+           Délégué à la Protection des Données, Laboratoire BIOGROUP, 1 rue Charles Péguy 67200 Strasbourg . Un modèle de lettre est
+           disponible à l'adresse internet suivante : https://biogroup.fr/documentation/formulaire−pdf−opposition−reutilisation
+           Enfin vous pouvez également, le cas échéant, introduire une réclamation auprès de la CNIL www.cnil.fr.
+
+           Aucun projet de recherche utilisant vos échantillons ou vos données ne peut être engagé avant l'expiration d'un délai d'un mois à
+           partir de la date de ce courrier. En l'absence d'opposition de votre part, vos échantillons et vos données pourront être utilisés à
+           des fins scientifiques. En cas d'opposition de votre part, votre décision n'affectera pas votre prise en charge médicale habituelle
+           et la qualité des soins que vous recevrez.
+           Vous conservez un droit d'opposition ultérieure à tout moment.
+
+
+
+
+                                                               Dr MANSOUR Wael (Biologiste)
+                                  Laboratoire enregistré sous le n°72−59 (SELAS LABORIZON MAINE ANJOU, Pôle Santé Sud - 72000 Le Mans, au capital de 307 678.50
+                                  euros - RCS Le Mans 518.912.985) Nous vous informons que, sauf opposition de votre part, vos résultats pourront être communiqués aux
+                                                                           professionnels de santé appartenant à l'équipe de soins.                                        Page 3 sur 3
+
